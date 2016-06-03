@@ -17,7 +17,7 @@ equipamentos de cada funcion?rio. Ordenar pelo custo total, do maior para o meno
 
 
 --4
-select f.NOME, r.DATA_FINAL, r.DATA_FINAL from reservas r
+select f.NOME, r.DATA_FINAL, r.DATA_FINAL from reservas
 join FUNCIONARIOS f on r.COD_MATRICULA = f.COD_MATRICULA;
 --5
 SELECT e.DESCRICAO, count(0) as quantidades_reservas, sum(e.CUSTO_DIARIO) as soma_custo_diario
