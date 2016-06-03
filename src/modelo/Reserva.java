@@ -6,34 +6,39 @@ import dao.EquipamentoDao;
 
 
 public class Reserva {
-    private int codEquipamento;
+
+    private int codReserva;
     private Equipamento equipamento;
-    private int codMatricula;
+    private Funcionario funcionario;
     private LocalDate dataInicial;
     private LocalDate dataFinal;
 
 
-    public Reserva(int codEquipamento, int codMatricula, LocalDate dataInicial, LocalDate dataFinal) {
-        this.codEquipamento = codEquipamento;
-        this.codMatricula = codMatricula;
+    public Reserva(int codReserva,Equipamento equipamento ,
+                   Funcionario funcionario, LocalDate dataInicial,
+                   LocalDate dataFinal) {
+        this.codReserva = codReserva;
+        this.equipamento = equipamento;
+        this.funcionario = funcionario;
         this.dataInicial = dataInicial;
         this.dataFinal = dataFinal;
     }
 
-    public int getCodEquipamento() {
-        return codEquipamento;
+    public int getCodReserva() {
+        return codReserva;
     }
 
     public Equipamento getEquipamento() {
-		if(equipamento == null){
-			equipamento =  new EquipamentoDao().buscarPorCod(codEquipamento);
-		}
-		return equipamento;
-	}
-    
-    public int getCodMatricula() {
-        return codMatricula;
+        return equipamento;
     }
+
+    public  int getCodEquipamento(){return  equipamento.getCodEquipamento();}
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public  int getCodMatricula(){return  funcionario.getCodMatricula();}
 
     public LocalDate getDataInicial() {
         return dataInicial;
@@ -46,8 +51,9 @@ public class Reserva {
     @Override
     public String toString() {
         return "Reserva{" +
-                "codEquipamento=" + codEquipamento +
-                ", codMatricula=" + codMatricula +
+                "codReserva=" + codReserva +
+                ", equipamento=" + equipamento +
+                ", funcionario=" + funcionario +
                 ", dataInicial=" + dataInicial +
                 ", dataFinal=" + dataFinal +
                 '}';

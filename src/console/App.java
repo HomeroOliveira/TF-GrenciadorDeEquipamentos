@@ -43,11 +43,8 @@ public class App {
                 break;
             case 2:
                 Equipamento equipamento = criarEquipamento();
-                try {
+
                     EQUIPAMENTO_DAO.inserir(equipamento);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
                 break;
             case 3:
                 System.out.println("Dígite a descrição do equipamento:");

@@ -50,7 +50,7 @@ public class EquipamentoDao extends AbstratcDao<Equipamento> {
     }
 
 
-    public void inserir(Equipamento equipamento) throws SQLException {
+    public void inserir(Equipamento equipamento)  {
         try (Connection connection = DataBase.getConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(INSERIR)) {
                 preparedStatement.setInt(1, equipamento.getCodEquipamento());
@@ -63,9 +63,9 @@ public class EquipamentoDao extends AbstratcDao<Equipamento> {
                 preparedStatement.execute();
             }
         }
-//        catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        catch (SQLException e) {
+           e.printStackTrace();
+       }
 
     }
 

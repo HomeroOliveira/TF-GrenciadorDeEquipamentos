@@ -22,6 +22,11 @@ public class Equipamento {
 		this.emManutencao = emManutencao;
 	}
 
+	public Equipamento(int codEquipamento, String descricao) {
+		this.codEquipamento = codEquipamento;
+		this.descricao = descricao;
+	}
+
 	public int getCodEquipamento() {
 		return codEquipamento;
 	}

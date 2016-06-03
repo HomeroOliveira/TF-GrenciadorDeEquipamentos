@@ -17,6 +17,11 @@ public class Funcionario {
     private String endereco;
     private BigDecimal salario;
 
+    public Funcionario(int codMatricula, String nome) {
+        this.codMatricula = codMatricula;
+        this.nome = nome;
+    }
+
     public Funcionario(int codMatricula, String nome, String senha, LocalDate dataNascimento, LocalDate dataAdmissao,
                        String sexo, String endereco, BigDecimal salario) {
         this.codMatricula = codMatricula;

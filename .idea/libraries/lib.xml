@@ -1,6 +1,7 @@
 <component name="libraryTable">
-  <library name="jcalendar-1.4">
+  <library name="lib">
     <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/ojdbc7.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jcalendar-1.4.jar!/" />
     </CLASSES>
     <JAVADOC />
