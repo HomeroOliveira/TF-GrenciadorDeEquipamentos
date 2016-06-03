@@ -6,7 +6,7 @@ CREATE TABLE Equipamentos(
   descricao varchar(50),
   custo_diario decimal,
   tipo_equipamento varchar(11),--FIXO, MOVEL, USO EXTERNO
-  em_manutencao char(1) check(em_manutencao in ('S', 'N')),
+  em_manutencao INTEGER(1) check(em_manutencao in (1, 0)),
   constraint pk_cod_equipamento primary key(cod_equipamento),                        
   constraint chk_custo check (custo_diario > 0)
 )
@@ -26,6 +26,7 @@ CREATE TABLE Funcionarios(
  )
 /
 CREATE TABLE Reservas(
+cod_reserva number PRIMARY KEY,
 cod_equipamento number,
 cod_matricula number,
 data_inicial date,
@@ -37,13 +38,13 @@ constraint chk_datas check (data_inicial <= data_final)
 --INSERT
 --Equipamentos
 INSERT INTO Equipamentos(cod_equipamento, data_aquisicao, descricao, custo_diario, tipo_equipamento, em_manutencao)
-VALUES (0001, '20-12-2010', 'Máquina de Escrever Olivetti Rara', 50.00, 'FIXO', 'N');
+VALUES (0001, '20-12-2010', 'Máquina de Escrever Olivetti Rara', 50.00, 'FIXO', 0);
 /
 INSERT INTO Equipamentos(cod_equipamento, data_aquisicao, descricao, custo_diario, tipo_equipamento, em_manutencao)
-VALUES (0002, '20-12-1990', 'Foice Clássica de Roçar Mato', 10.50, 'MOVEL', 'N');
+VALUES (0002, '20-12-1990', 'Foice Clássica de Roçar Mato', 10.50, 'MOVEL', 0);
 /
 INSERT INTO Equipamentos(cod_equipamento, data_aquisicao, descricao, custo_diario, tipo_equipamento, em_manutencao)
-VALUES (0003, '10-05-2016', 'Maca Cirurgica Comum', 100.00, 'USO EXTERNO', 'N');
+VALUES (0003, '10-05-2016', 'Maca Cirurgica Comum', 100.00, 'USO EXTERNO', 0);
 /
 --Funcionarios
 INSERT INTO Funcionarios(cod_matricula, senha, nome, data_nascimento, data_admissao, sexo, endereco, salario_mensal)
@@ -63,6 +64,6 @@ INSERT INTO Reservas(cod_equipamento, cod_matricula, data_inicial, data_final)
 VALUES (0002, 0002, '12-02-2012', '24-04-2014');
 /
 INSERT INTO Reservas(cod_equipamento, cod_matricula, data_inicial, data_final)
-VALUES (0003,0003, '13-05-2016', '14-05-2016');
+VALUES (0003, 0003, '13-05-2016', '14-05-2016');
 
 COMMIT

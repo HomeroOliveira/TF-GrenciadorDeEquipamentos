@@ -1,15 +1,32 @@
-1.Listagem de todos os funcionários, em ordem alfabética.(Homero)
+1.Listagem de todos os funcion?rios, em ordem alfab?tica.(Feito)
 
-2.Busca de um funcionário ou equipamento por nome ou descrição.
+2.Busca de um funcion?rio ou equipamento por nome ou descriÃ§Ã£o.(Feito)
 
-3.Fazer uma nova reserva (inserção de um registro de reserva).
+3.Fazer uma nova reserva (inserÃ§Ã£o de um registro de reserva).
 
-4.Relatório de reservas futuras (quem reservou qual equipamento e para qual período).
+4.Relat?rio de reservas futuras (quem reservou qual equipamento e para qual per?odo).
 
 5.Visualizar a   quantidade   de reservas   de   um   equipamento  
  e o   total   do   custo correspondente.
 
-6.Listar  os  funcionários,  o  número  de  reservas  de  cada  um,  e  o  custo  total  de  uso  de 
-equipamentos de cada funcionário. Ordenar pelo custo total, do maior para o menor.
+6.Listar  os  funcion?rios,  o  n?mero  de  reservas  de  cada  um,  e  o  custo  total  de  uso  de 
+equipamentos de cada funcion?rio. Ordenar pelo custo total, do maior para o menor.
 
-7.[Uma consulta à escolha do grupo (deve envolver pelo menos uma subconsulta)]
+7.[Uma consulta ? escolha do grupo (deve envolver pelo menos uma subconsulta)]
+
+
+--4
+select f.NOME, r.DATA_FINAL, r.DATA_FINAL from reservas r
+join FUNCIONARIOS f on r.COD_MATRICULA = f.COD_MATRICULA;
+--5
+SELECT e.DESCRICAO, count(0) as quantidades_reservas, sum(e.CUSTO_DIARIO) as soma_custo_diario
+FROM RESERVAS R
+join EQUIPAMENTOS e on R.COD_EQUIPAMENTO = e.COD_EQUIPAMENTO
+GROUP BY e.DESCRICAO;
+--6
+SELECT f.NOME, count(0), sum(e.CUSTO_DIARIO) as soma
+FROM FUNCIONARIOS f
+JOIN RESERVAS r on f.COD_MATRICULA = r.COD_MATRICULA
+JOIN EQUIPAMENTOS e on r.COD_EQUIPAMENTO = e.COD_EQUIPAMENTO
+GROUP BY f.NOME, e.DESCRICAO
+ORDER BY soma DESC ;

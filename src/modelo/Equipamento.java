@@ -5,17 +5,17 @@ import java.time.LocalDate;
 
 public class Equipamento {
 	private int codEquipamento;
-	private LocalDate dataAquisa;
+	private LocalDate dataAquisao;
 	private String descricao;
 	private BigDecimal custoDiario;
 	private String tipoEquipamento;
 	private boolean emManutencao;
 	
-	public Equipamento(int codEquipamento, LocalDate dataAquisa, String descricao, BigDecimal custoDiario,
+	public Equipamento(int codEquipamento, LocalDate dataAquisao, String descricao, BigDecimal custoDiario,
 			String tipoEquipamento, boolean emManutencao) {
 		super();
 		this.codEquipamento = codEquipamento;
-		this.dataAquisa = dataAquisa;
+		this.dataAquisao = dataAquisao;
 		this.descricao = descricao;
 		this.custoDiario = custoDiario;
 		this.tipoEquipamento = tipoEquipamento;
@@ -26,8 +26,9 @@ public class Equipamento {
 		return codEquipamento;
 	}
 
-	public LocalDate getDataAquisa() {
-		return dataAquisa;
+
+    public LocalDate getDataAquisao() {
+		return dataAquisao;
 	}
 
 	public String getDescricao() {
@@ -45,5 +46,16 @@ public class Equipamento {
 	public boolean isEmManutencao() {
 		return emManutencao;
 	}
-			
+
+    @Override
+    public String toString() {
+        return "Equipamento{" +
+                "codEquipamento=" + codEquipamento +
+                ", dataAquisao=" + dataAquisao +
+                ", descricao='" + descricao + '\'' +
+                ", custoDiario=" + custoDiario +
+                ", tipoEquipamento='" + tipoEquipamento + '\'' +
+                ", emManutencao=" + emManutencao +
+                '}';
+    }
 }
