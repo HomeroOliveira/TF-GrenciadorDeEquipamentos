@@ -20,8 +20,6 @@ import utils.LocalDateUtils;
 public class JReservaDialog
 		extends JDialog {
 
-	private final JPanel contentPanel = new JPanel();
-	private final Action action = new SwingAction();
 	private JDateChooser jDateChooser;
 
 	/**
@@ -44,6 +42,7 @@ public class JReservaDialog
 	public JReservaDialog() {
 		setBounds(100, 100, 531, 400);
 		getContentPane().setLayout(new BorderLayout());
+		JPanel contentPanel = new JPanel();
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
@@ -115,6 +114,7 @@ public class JReservaDialog
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton salvarButton = new JButton("Salvar");
+				Action action = new SwingAction();
 				salvarButton.setAction(action);
 				salvarButton.setActionCommand("OK");
 				buttonPane.add(salvarButton);

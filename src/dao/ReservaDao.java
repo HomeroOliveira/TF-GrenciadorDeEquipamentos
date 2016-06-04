@@ -16,15 +16,21 @@ public class ReservaDao {
     private static final String BUSCAR_TODOS = "SELECT  r.cod_reserva,r.cod_equipamento, r.cod_matricula " +
             ",f.NOME, e.descricao ,r.DATA_INICIAL, r.DATA_FINAL from reservas r" +
             "  join FUNCIONARIOS f on r.COD_MATRICULA = f.COD_MATRICULA" +
-            "  join Equipamentos e on Reservas.cod_equipamento = e.cod_equipamento";
+            "  join Equipamentos e on r.cod_equipamento = e.cod_equipamento";
+
     private static final String INSERIR = "INSERT INTO RESERVAS (COD_EQUIPAMENTO, " +
             "COD_MATRICULA, DATA_INICIAL, DATA_FINAL) VALUES (?,?,?,?)";
-    private static final String sql = "select FUNCIONARIOS.NOME, reservas.DATA_INICIAL, reservas.DATA_FINAL from reservas " +
-    		"join FUNCIONARIOS on reservas.COD_MATRICULA = FUNCIONARIOS.COD_MATRICULA";
+
+    private static final String RESERVAS_FUTURAS = "SELECT  r.cod_reserva,r.cod_equipamento, r.cod_matricula "+
+            ", f.nome, e.descricao, r.data_final, r.data_final from RESERVAS r "+
+            " JOIN FUNCIONARIOS f on r.COD_MATRICULA = f.COD_MATRICULA"+
+            " JOIN EQUIPAMENTOS e on r.COD_EQUIPAMENTO = e.COD_EQUIPAMENTO"+
+            " WHERE r.DATA_INICIAL > sysdate";
+
+    private static final String
 
     public List<Reserva> buscarTodos() {
         List<Reserva> reservas = new ArrayList<>();
-
 
         try (Connection connection = DataBase.getConnection()) {
             try (Statement statement = connection.createStatement()) {
@@ -38,7 +44,6 @@ public class ReservaDao {
         }
 
         return reservas;
-
     }
 
     private void criaReservas(List<Reserva> reservas, ResultSet resultSet) throws SQLException {
@@ -52,17 +57,17 @@ public class ReservaDao {
             LocalDate dataFinal = LocalDateUtils.toLocalDate(resultSet.getDate(7));
 
             Equipamento equipamento = porCodEquipamento.get(codEquipamento);
-            if(equipamento != null){
+            if(equipamento == null){
                 String descricao = resultSet.getString(5);
                 equipamento = new Equipamento(codEquipamento, descricao);
                 porCodEquipamento.put(codEquipamento, equipamento);
             }
 
             Funcionario funcionario = porCodMatricula.get(codMatricula);
-            if(funcionario != null){
+            if(funcionario == null){
                 String nome = resultSet.getString(4);
                 funcionario = new Funcionario(codMatricula, nome);
-                porCodEquipamento.put(codEquipamento, equipamento);
+                porCodMatricula.put(codEquipamento, funcionario);
             }
 
             Reserva reserva = new Reserva(codReserva, equipamento, funcionario, dataInicial, dataFinal);
@@ -98,7 +103,7 @@ public class ReservaDao {
 
         try (Connection connection = DataBase.getConnection()) {
             try (Statement statement = connection.createStatement()) {
-                try (ResultSet resultSet = statement.executeQuery(sql)) {
+                try (ResultSet resultSet = statement.executeQuery(RESERVAS_FUTURAS)) {
                     while(resultSet.next()){
                     String funcionario = resultSet.getString(1);
                     LocalDate dataInicial = resultSet.getDate(2).toLocalDate();

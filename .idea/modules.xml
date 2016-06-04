@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TF-GrenciadorDeEquipamentos.iml" filepath="$PROJECT_DIR$/TF-GrenciadorDeEquipamentos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TF-GerenciadorDeEquipamentos.iml" filepath="$PROJECT_DIR$/TF-GerenciadorDeEquipamentos.iml" />
     </modules>
   </component>
 </project>

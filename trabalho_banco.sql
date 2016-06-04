@@ -69,17 +69,18 @@ VALUES (0003, 0003, '13-05-2016', '14-05-2016');
 COMMIT;
 
 --4
-SELECT  r.cod_reserva,r.cod_equipamento, r.cod_matricula ,f.NOME, e.descricao ,r.DATA_INICIAL, r.DATA_FINAL from reservas r
+SELECT  r.cod_equipamento, r.cod_matricula ,f.NOME, e.descricao ,r.DATA_INICIAL, r.DATA_FINAL from reservas r
   join FUNCIONARIOS f on r.COD_MATRICULA = f.COD_MATRICULA
-  join Equipamentos e on Reservas.cod_equipamento = e.cod_equipamento
+  join Equipamentos e on r.cod_equipamento = e.cod_equipamento
 where r.DATA_INICIAL > sysdate;
 --5
-SELECT e.DESCRICAO, count(0) as quantidades_reservas, sum(e.CUSTO_DIARIO) as soma_custo_diario
+SELECT e.DESCRICAO, count(*) as quantidades_reservas,
+    sum(e.CUSTO_DIARIO * (r.data_final - r.data_inicial + 1)) as soma_custo_diario
 FROM RESERVAS R
   join EQUIPAMENTOS e on R.COD_EQUIPAMENTO = e.COD_EQUIPAMENTO
 GROUP BY e.DESCRICAO;
 --6
-SELECT f.NOME, count(0), sum(e.CUSTO_DIARIO) as soma
+SELECT f.NOME, count(*), sum(e.CUSTO_DIARIO) as soma
 FROM FUNCIONARIOS f
   JOIN RESERVAS r on f.COD_MATRICULA = r.COD_MATRICULA
   JOIN EQUIPAMENTOS e on r.COD_EQUIPAMENTO = e.COD_EQUIPAMENTO

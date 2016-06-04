@@ -5,10 +5,9 @@
 
 3.Fazer uma nova reserva (inserção de um registro de reserva).
 
-4.Relat?rio de reservas futuras (quem reservou qual equipamento e para qual per?odo).
+4.Relat?rio de reservas futuras (quem reservou qual equipamento e para qual per?odo)(Feito).
 
-5.Visualizar a   quantidade   de reservas   de   um   equipamento  
- e o   total   do   custo correspondente.
+5.Visualizar a   quantidade   de reservas   de   um   equipamento  e o   total   do   custo correspondente.
 
 6.Listar  os  funcion?rios,  o  n?mero  de  reservas  de  cada  um,  e  o  custo  total  de  uso  de 
 equipamentos de cada funcion?rio. Ordenar pelo custo total, do maior para o menor.

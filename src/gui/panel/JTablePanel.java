@@ -1,7 +1,4 @@
-package gui;
-
-import com.sun.imageio.plugins.png.*;
-import modelo.Funcionario;
+package gui.panel;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -12,7 +9,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import java.time.LocalDate;
 
 public class JTablePanel extends JPanel {
 	/**
@@ -55,7 +51,7 @@ public class JTablePanel extends JPanel {
                     }
                 });
         
-        Icon searchIcon = new ImageIcon("search-icon.png");
+       // Icon searchIcon = new ImageIcon("search-icon.png");
 		
 		JLabel lblIcone = new JLabel("");
 		lblIcone.setIcon(new ImageIcon("C:\\Users\\Junior\\Documents\\GitHub\\TF-GrenciadorDeEquipamentos\\search-icon.png"));

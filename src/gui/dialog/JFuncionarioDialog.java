@@ -241,7 +241,7 @@ public class JFuncionarioDialog extends JDialog {
                 JButton btnSalvar = new JButton("Salvar");
                 btnSalvar.setActionCommand("Salvar");
                 btnSalvar.addActionListener(e -> {
-                   Funcionario funcionario  = validarECriar();
+                   Funcionario funcionario  = criarFuncionario();
                     cadastrar(funcionario);
                 });
 
@@ -259,7 +259,7 @@ public class JFuncionarioDialog extends JDialog {
         }
     }
 
-    public Funcionario validarECriar() {
+    public Funcionario criarFuncionario() {
         int cod = Integer.parseInt(txtCod.getText());
         String nome = txtNome.getText();
         String senha = new String(txtSenha.getPassword());
@@ -269,9 +269,8 @@ public class JFuncionarioDialog extends JDialog {
         LocalDate dataNasc = LocalDateUtils.toLocalDate(dateChooserNasc.getDate());
         LocalDate dataAdmin = LocalDateUtils.toLocalDate(dateChooseAdmi.getDate());
 
-        Funcionario funcionario = new Funcionario(cod, nome, senha,
+        return new Funcionario(cod, nome, senha,
                 dataNasc, dataAdmin, sexo, endereco, salario);
-        return funcionario;
     }
 
     public void cadastrar(Funcionario funcionario) {

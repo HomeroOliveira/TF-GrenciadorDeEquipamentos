@@ -4,9 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Funcionario {
-    //Sexo
-    public static final String MASCULINO = "M";
-    public static final String FEMININO = "F";
 
     private int codMatricula;
     private String nome;

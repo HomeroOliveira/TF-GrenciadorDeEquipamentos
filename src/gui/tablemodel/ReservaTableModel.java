@@ -2,7 +2,6 @@ package gui.tablemodel;
 
 import modelo.Reserva;
 
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import java.time.LocalDate;
@@ -13,10 +12,10 @@ import java.util.NoSuchElementException;
  * Created by Junior on 20/05/2016.
  */
 public class ReservaTableModel extends AbstractTableModel implements TableModel{
-    private static final String[] COLUNAS = {"Cod Equipamento", "Cod Matricula",
+    private static final String[] COLUNAS = {"Equipamento", "Funcionario",
             "Data Inicial", "Data Final"};
-    private static final int COD_EQUIPAMENTO = 0;
-    private static final int COD_MATRICULA = 1;
+    private static final int EQUIPAMENTO = 0;
+    private static final int FUNCIONARIO = 1;
     private static final int DATA_INICIAL = 2;
     private static final int DATA_FINAL = 3;
     private final List<Reserva> reservas;
@@ -45,10 +44,10 @@ public class ReservaTableModel extends AbstractTableModel implements TableModel{
     public Class<?> getColumnClass(int columnIndex) {
 
         switch (columnIndex) {
-            case COD_EQUIPAMENTO:
-                return Number.class;
-            case COD_MATRICULA:
-                return Number.class;
+            case EQUIPAMENTO:
+                return String.class;
+            case FUNCIONARIO:
+                return String.class;
             case DATA_INICIAL:
                 return LocalDate.class;
             case DATA_FINAL:
@@ -66,10 +65,10 @@ public class ReservaTableModel extends AbstractTableModel implements TableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
-            case COD_EQUIPAMENTO:
-                return reservas.get(rowIndex).getCodEquipamento();
-            case COD_MATRICULA:
-                return reservas.get(rowIndex).getCodMatricula();
+            case EQUIPAMENTO:
+                return reservas.get(rowIndex).getEquipamento().getDescricao();
+            case FUNCIONARIO:
+                return reservas.get(rowIndex).getFuncionario().getNome();
             case DATA_INICIAL:
                 return reservas.get(rowIndex).getDataInicial();
             case DATA_FINAL:

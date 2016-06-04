@@ -15,12 +15,15 @@ import gui.cellrender.BigDecimalCellRender;
 import gui.cellrender.LocalDateCellRender;
 import gui.dialog.JEquipamentoDialog;
 import gui.dialog.JFuncionarioDialog;
+import gui.panel.JTablePanel;
 import gui.tablemodel.EquipamentoTableModel;
 import gui.tablemodel.FuncionarioTableModel;
 import gui.tablemodel.ReservaTableModel;
 import modelo.Equipamento;
 import modelo.Funcionario;
 import modelo.Reserva;
+
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class MainApp {
 
@@ -59,7 +62,7 @@ public class MainApp {
     private void initialize() {
         frame = new JFrame();
         frame.setBounds(100, 100, 560, 520);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         JTabbedPane tabbedPane = new JTabbedPane();
 
@@ -97,12 +100,9 @@ public class MainApp {
 
         Icon iconReserva = new ImageIcon(ClassLoader.getSystemResource("gui/images/reserva.jpg"));
 
-        String title = "Funcionario";
-        tabbedPane.addTab(title, iconFuncionario, jpanelFuncionario);
-        title = "Equipamneto";
-        tabbedPane.addTab(title, iconEquipamento, jpanelEquipamento);
-        title = "Reservas";
-        tabbedPane.addTab(title, iconReserva, jpanelReservas);
+        tabbedPane.addTab("Funcionario", iconFuncionario, jpanelFuncionario);
+        tabbedPane.addTab("Equipamneto", iconEquipamento, jpanelEquipamento);
+        tabbedPane.addTab("Reservas", iconReserva, jpanelReservas);
 
         GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
         groupLayout
