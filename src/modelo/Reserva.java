@@ -2,8 +2,6 @@ package modelo;
 
 import java.time.LocalDate;
 
-import dao.EquipamentoDao;
-
 
 public class Reserva {
 
@@ -44,6 +42,9 @@ public class Reserva {
         return dataInicial;
     }
 
+    /**
+     * @return Data final da reserva.
+     */
     public LocalDate getDataFinal() {
         return dataFinal;
     }

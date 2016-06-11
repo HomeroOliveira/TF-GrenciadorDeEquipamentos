@@ -8,7 +8,11 @@ import java.awt.event.ActionEvent;
  */
 public class CancelAction extends AbstractAction {
 
-    private JDialog component;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2635931020464442449L;
+	private JDialog component;
 
     public CancelAction( JDialog component) {
         super("Cancelar");

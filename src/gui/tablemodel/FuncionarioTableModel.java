@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 public class FuncionarioTableModel extends AbstractTableModel implements TableModel {
     private static final String[] COLUNAS = {"Nome", "Data Nascimento",
              "Sexo", "Endereço","Data Admissão", "Sálario"};
-    private final List<Funcionario> funcionarios;
+    private  List<Funcionario> funcionarios;
 
     public FuncionarioTableModel(List<Funcionario> funcionarios) {
         this.funcionarios = funcionarios;
@@ -90,5 +90,10 @@ public class FuncionarioTableModel extends AbstractTableModel implements TableMo
 
     public List<Funcionario> getFuncionarios() {
         return funcionarios;
+    }
+
+    public void setFuncionarios(List<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+        super.fireTableDataChanged();
     }
 }

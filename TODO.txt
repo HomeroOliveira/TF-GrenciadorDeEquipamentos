@@ -1,17 +1,17 @@
 
-1.Listagem de todos os funcion?rios, em ordem alfab?tica.(Feito)
+1.Listagem de todos os funcion?rios, em ordem alfabetica.(Feito)
 
-2.Busca de um funcion?rio ou equipamento por nome ou descrição.(Feito)
+2.Busca de um funcion?rio ou equipamento por nome ou descrição(Feito).
 
 3.Fazer uma nova reserva (inserção de um registro de reserva).
 
-4.Relat?rio de reservas futuras (quem reservou qual equipamento e para qual per?odo)(Feito).
+4.Relatorio de reservas futuras (quem reservou qual equipamento e para qual periodo)(Feito).
 
-5.Visualizar a   quantidade   de reservas   de   um   equipamento  e o   total   do   custo correspondente.
+5.Visualizar a   quantidade   de reservas   de   um   equipamento  e o   total   do   custo correspondente.(Feito)
 
-6.Listar  os  funcion?rios,  o  n?mero  de  reservas  de  cada  um,  e  o  custo  total  de  uso  de 
-equipamentos de cada funcion?rio. Ordenar pelo custo total, do maior para o menor.
+6.Listar  os  funcionarios,  o  numero  de  reservas  de  cada  um,  e  o  custo  total  de  uso  de
+equipamentos de cada funcionario. Ordenar pelo custo total, do maior para o menor(Feito).
 
-7.[Uma consulta ? escolha do grupo (deve envolver pelo menos uma subconsulta)]
+7.[Uma consulta a escolha do grupo (deve envolver pelo menos uma subconsulta)]
 
 

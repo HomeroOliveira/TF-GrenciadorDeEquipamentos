@@ -6,6 +6,7 @@ import modelo.Reserva;
 import utils.LocalDateUtils;
 import utils.Tuple;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -14,20 +15,19 @@ import java.util.*;
 public class ReservaDao {
 
     private static final String BUSCAR_TODOS = "SELECT  r.cod_reserva,r.cod_equipamento, r.cod_matricula " +
-            ",f.NOME, e.descricao ,r.DATA_INICIAL, r.DATA_FINAL from reservas r" +
-            "  join FUNCIONARIOS f on r.COD_MATRICULA = f.COD_MATRICULA" +
-            "  join Equipamentos e on r.cod_equipamento = e.cod_equipamento";
+            ",f.NOME, e.descricao ,r.DATA_INICIAL, r.DATA_FINAL FROM reservas r" +
+            "  JOIN FUNCIONARIOS f ON r.COD_MATRICULA = f.COD_MATRICULA" +
+            "  JOIN Equipamentos e ON r.cod_equipamento = e.cod_equipamento";
 
     private static final String INSERIR = "INSERT INTO RESERVAS (COD_EQUIPAMENTO, " +
             "COD_MATRICULA, DATA_INICIAL, DATA_FINAL) VALUES (?,?,?,?)";
 
-    private static final String RESERVAS_FUTURAS = "SELECT  r.cod_reserva,r.cod_equipamento, r.cod_matricula "+
-            ", f.nome, e.descricao, r.data_final, r.data_final from RESERVAS r "+
-            " JOIN FUNCIONARIOS f on r.COD_MATRICULA = f.COD_MATRICULA"+
-            " JOIN EQUIPAMENTOS e on r.COD_EQUIPAMENTO = e.COD_EQUIPAMENTO"+
+    private static final String RESERVAS_FUTURAS = "SELECT  r.cod_reserva,r.cod_equipamento, r.cod_matricula " +
+            ", f.nome, e.descricao, r.data_final, r.data_final FROM RESERVAS r " +
+            " JOIN FUNCIONARIOS f ON r.COD_MATRICULA = f.COD_MATRICULA" +
+            " JOIN EQUIPAMENTOS e ON r.COD_EQUIPAMENTO = e.COD_EQUIPAMENTO"+
             " WHERE r.DATA_INICIAL > sysdate";
 
-    private static final String
 
     public List<Reserva> buscarTodos() {
         List<Reserva> reservas = new ArrayList<>();
@@ -39,7 +39,7 @@ public class ReservaDao {
 
                 }
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -57,14 +57,14 @@ public class ReservaDao {
             LocalDate dataFinal = LocalDateUtils.toLocalDate(resultSet.getDate(7));
 
             Equipamento equipamento = porCodEquipamento.get(codEquipamento);
-            if(equipamento == null){
+            if (equipamento == null) {
                 String descricao = resultSet.getString(5);
                 equipamento = new Equipamento(codEquipamento, descricao);
                 porCodEquipamento.put(codEquipamento, equipamento);
             }
 
             Funcionario funcionario = porCodMatricula.get(codMatricula);
-            if(funcionario == null){
+            if (funcionario == null) {
                 String nome = resultSet.getString(4);
                 funcionario = new Funcionario(codMatricula, nome);
                 porCodMatricula.put(codEquipamento, funcionario);
@@ -87,30 +87,48 @@ public class ReservaDao {
                 return preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw   new Exception(e.getMessage());
+            throw new Exception(e.getMessage());
         }
 
 
     }
 
 
-
-
-
-
-    public List<Tuple<String, LocalDate, LocalDate>> buscarReservasFuturas() {
-        List<Tuple<String, LocalDate, LocalDate>> resultado = new ArrayList<>();
+    public List<Reserva> buscarReservasFuturas() {
+        List<Reserva> reservas = new ArrayList<>();
 
         try (Connection connection = DataBase.getConnection()) {
             try (Statement statement = connection.createStatement()) {
                 try (ResultSet resultSet = statement.executeQuery(RESERVAS_FUTURAS)) {
-                    while(resultSet.next()){
-                    String funcionario = resultSet.getString(1);
-                    LocalDate dataInicial = resultSet.getDate(2).toLocalDate();
-                    LocalDate dataFinal = resultSet.getDate(3).toLocalDate();
-                    Tuple<String, LocalDate, LocalDate> tupla = new Tuple<>(funcionario,
-                            dataInicial, dataFinal);
-                    resultado.add(tupla);
+                    criaReservas(reservas, resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservas;
+
+    }
+
+
+    public List<Tuple<String, Integer, BigDecimal>> buscarQuantidadeDeReservasComEquipamentos() {
+        List<Tuple<String, Integer, BigDecimal>> resultado = new ArrayList<>();
+        String sql = "SELECT e.DESCRICAO, count(*) AS quantidades_reservas, " +
+                "sum(e.CUSTO_DIARIO * (r.data_final - r.data_inicial + 1)) AS soma_custo_diario " +
+                "FROM RESERVAS r " +
+                "JOIN EQUIPAMENTOS e ON r.COD_EQUIPAMENTO = e.COD_EQUIPAMENTO " +
+                "GROUP BY e.DESCRICAO";
+
+        try (Connection connection = DataBase.getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                try (ResultSet resultSet = statement.executeQuery(sql)) {
+                    while (resultSet.next()) {
+                        String descricao = resultSet.getString(1);
+                        int quantidadeReservas = resultSet.getInt(2);
+                        BigDecimal somaCustoDiario = resultSet.getBigDecimal(3);
+                        Tuple<String, Integer, BigDecimal> tupla =
+                                new Tuple<>(descricao, quantidadeReservas, somaCustoDiario);
+                        resultado.add(tupla);
                     }
                 }
             }
@@ -118,12 +136,40 @@ public class ReservaDao {
             e.printStackTrace();
         }
         return resultado;
-
     }
 
 
 
 
+
+    public List<Tuple<String, Integer, BigDecimal>> buscarQuantidadeDeReservasComFuncionario() {
+        List<Tuple<String, Integer, BigDecimal>> resultado = new ArrayList<>();
+        String sql  = "SELECT f.NOME, count(f.COD_MATRICULA), sum(e.CUSTO_DIARIO * (r.data_final - r.data_inicial + 1)) AS soma " +
+                "FROM FUNCIONARIOS f " +
+                "  JOIN RESERVAS r ON f.COD_MATRICULA = r.COD_MATRICULA" +
+                "  JOIN EQUIPAMENTOS e ON r.COD_EQUIPAMENTO = e.COD_EQUIPAMENTO " +
+                "GROUP BY f.NOME, e.DESCRICAO " +
+                "ORDER BY soma DESC ";
+
+        try (Connection connection = DataBase.getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                try (ResultSet resultSet = statement.executeQuery(sql)) {
+                    while (resultSet.next()) {
+                        String nome = resultSet.getString(1);
+                        int quantidadeReservas = resultSet.getInt(2);
+                        BigDecimal somaCustoDiario = resultSet.getBigDecimal(3);
+                        Tuple<String, Integer, BigDecimal> tupla =
+                                new Tuple<>(nome, quantidadeReservas, somaCustoDiario);
+                        resultado.add(tupla);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultado;
+    }
 
 
 }

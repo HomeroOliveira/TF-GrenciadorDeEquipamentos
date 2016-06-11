@@ -1,39 +1,68 @@
 package dao;
 
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import modelo.Funcionario;
 
-import java.math.BigDecimal;
-import java.sql.*;
-import java.time.LocalDate;
-import java.util.Optional;
-
-public class FuncionarioDao extends AbstratcDao<Funcionario> {
+public class FuncionarioDao{
 
     private static final String BUSCAR_TODOS = "SELECT * FROM funcionarios ORDER BY nome";
-    private static final String BUSCAR_POR_NOME = "SELECT * FROM funcionarios WHERE nome = ?";
+    private static final String BUSCAR_POR_NOME = "SELECT * FROM funcionarios WHERE nome like ?";
     private static final String INSERIR = "INSERT INTO Funcionarios( " +
             "cod_matricula, nome, senha, data_nascimento, " +
             "data_admissao, sexo, endereco, salario_mensal) " +
             "VALUES (?,?,?,?,?,?,?,?)";
     private static int COD_MATRICULA = 1;
 
+    
+    public List<Funcionario> buscarTodos() {
 
-    public Optional<Funcionario> buscarPor(String nome) {
+        List<Funcionario> funcionarios = new ArrayList<>();
+        try (Connection connection = DataBase.getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                try (ResultSet resultSet = statement.executeQuery(BUSCAR_TODOS)) {
+                    while (resultSet.next()) {
+                        Funcionario t = criar(resultSet);
+                        funcionarios.add(t);
 
-        try (Connection conn = DataBase.getConnection()) {
-            try (PreparedStatement stmt = conn.prepareStatement(BUSCAR_POR_NOME)) {
-                stmt.setString(3, nome);
-                try (ResultSet resultSet = stmt.executeQuery()) {
-                    if (resultSet.next()) {
-                        Funcionario funcionario = criar(resultSet);
-                        return Optional.of(funcionario);
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return Optional.empty();
+
+        return funcionarios;
+    }
+    
+
+    public List<Funcionario> buscarPorNome(String nome) {
+
+        List<Funcionario> funcionarios = new ArrayList<>();
+
+        try (Connection conn = DataBase.getConnection()) {
+            try (PreparedStatement stmt = conn.prepareStatement(BUSCAR_POR_NOME)) {
+                stmt.setString(1, "%"+nome+"%");
+                try (ResultSet resultSet = stmt.executeQuery()) {
+                    while (resultSet.next()) {
+                        Funcionario funcionario = criar(resultSet);
+                        funcionarios.add(funcionario);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return funcionarios;
     }
 
     public int inserir(Funcionario funcionario) {
@@ -56,13 +85,8 @@ public class FuncionarioDao extends AbstratcDao<Funcionario> {
         }
     }
 
-    @Override
-    protected String getBUSCAR_TODOS() {
-        return BUSCAR_TODOS;
-    }
 
-    @Override
-    protected Funcionario criar(ResultSet resultSet) throws SQLException {
+    private Funcionario criar(ResultSet resultSet) throws SQLException {
         int codMatricula = resultSet.getInt(COD_MATRICULA);
         String nome = resultSet.getString(3);
         String senha = resultSet.getString(2);

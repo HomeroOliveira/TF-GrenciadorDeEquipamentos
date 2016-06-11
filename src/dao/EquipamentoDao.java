@@ -5,27 +5,38 @@ import modelo.Equipamento;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EquipamentoDao extends AbstratcDao<Equipamento> {
 
     private static final String BUSCAR_TODOS = "SELECT * FROM equipamentos";
+
     private static final String INSERIR = "INSERT INTO EQUIPAMENTOS " +
             "(COD_EQUIPAMENTO, DATA_AQUISICAO, DESCRICAO, CUSTO_DIARIO," +
             " TIPO_EQUIPAMENTO, EM_MANUTENCAO) " +
             " VALUES (?,?,?,?,?,?)";
-    private static final String BUSCAR_DESCRICAO = "select * from Equipamentos where descricao = ?";
 
+    private static final String BUSCAR_DESCRICAO = "SELECT * FROM Equipamentos WHERE DESCRICAO LIKE ?";
 
-    public Optional<Equipamento> buscarPor(String descricao) {
+    private static final String COD_EQUIMENTO = "COD_EQUIPAMENTO";
+    private static final String DATA_AQUISICAO = "DATA_AQUISICAO";
+    private static final String DESCRICAO = "DESCRICAO";
+    private static final String CUSTO_DIARIO = "CUSTO_DIARIO";
+    private static final String TIPO_EQUIPAMENTO = "TIPO_EQUIPAMENTO";
+    private static final String EM_MANUTENCAO = "EM_MANUTENCAO";
 
+    public List<Equipamento> buscarPorDescricao(String descricao) {
+
+        List<Equipamento> equipamentos = new ArrayList<>();
+    	
         try (Connection connection = DataBase.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(BUSCAR_DESCRICAO)) {
-                statement.setString(1, descricao);
+                statement.setString(1, "%"+descricao+"%");
                 try (ResultSet resultSet = statement.executeQuery()) {
-                    if (resultSet.next()) {
+                    while (resultSet.next()) {
                         Equipamento equipamento = criar(resultSet);
-                        return Optional.of(equipamento);
+                        equipamentos.add(equipamento);
                     }
                 }
             }
@@ -33,17 +44,17 @@ public class EquipamentoDao extends AbstratcDao<Equipamento> {
             e.printStackTrace();
         }
 
-        return Optional.empty();
+        return equipamentos;
     }
 
 
     protected Equipamento criar(ResultSet resultSet) throws SQLException {
-        int codEquipamento = resultSet.getInt(1);
-        LocalDate dataAquisicao = resultSet.getDate(2).toLocalDate();
-        String descricao = resultSet.getString(3);
-        BigDecimal custoDiario = resultSet.getBigDecimal(4);
-        String tipoEquipamento = resultSet.getString(5);
-        boolean emManutencao = resultSet.getString(6).equals("S");
+        int codEquipamento = resultSet.getInt(COD_EQUIMENTO);
+        LocalDate dataAquisicao = resultSet.getDate(DATA_AQUISICAO).toLocalDate();
+        String descricao = resultSet.getString(DESCRICAO);
+        BigDecimal custoDiario = resultSet.getBigDecimal(CUSTO_DIARIO);
+        String tipoEquipamento = resultSet.getString(TIPO_EQUIPAMENTO);
+        boolean emManutencao = resultSet.getString(EM_MANUTENCAO).equals("S");
 
         return new Equipamento(codEquipamento, dataAquisicao,
                 descricao, custoDiario, tipoEquipamento, emManutencao);
@@ -70,12 +81,10 @@ public class EquipamentoDao extends AbstratcDao<Equipamento> {
     }
 
 
-    @Override
-    protected String getBUSCAR_TODOS() {
-        return BUSCAR_TODOS;
-    }
+	@Override
+	protected String getBUSCAR_TODOS() {
+		return BUSCAR_TODOS;
+	}
 
-    public Equipamento buscarPorCod(int codEquipamento) {
-        return null;
-    }
+
 }

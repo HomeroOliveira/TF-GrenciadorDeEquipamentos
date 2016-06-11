@@ -1,22 +1,26 @@
 package gui.tablemodel;
 
-import modelo.Equipamento;
-
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.StringJoiner;
+
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+
+import modelo.Equipamento;
 
 /**
  * Created by Junior on 24/05/2016.
  */
 public class EquipamentoTableModel extends AbstractTableModel implements TableModel {
-    private static final String[] COLUNAS = {"Descricao", "Data Aquisição",
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -681506595495434423L;
+	private static final String[] COLUNAS = {"Descricao", "Data Aquisição",
             "Custo Diário", "Tipo Equipamento", "Em Manutenção"};
-    private final List<Equipamento> equipamentos;
+    private  List<Equipamento> equipamentos;
 
     public EquipamentoTableModel(List<Equipamento> equipamentos) {
         this.equipamentos = equipamentos;
@@ -88,4 +92,10 @@ public class EquipamentoTableModel extends AbstractTableModel implements TableMo
     public List<Equipamento> getEquipamentos() {
         return equipamentos;
     }
+
+
+	public void setEquipamentos(List<Equipamento> equipamentos) {
+		this.equipamentos = equipamentos;
+		super.fireTableDataChanged();
+	}
 }

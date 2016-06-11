@@ -12,7 +12,12 @@ import java.util.NoSuchElementException;
  * Created by Junior on 20/05/2016.
  */
 public class ReservaTableModel extends AbstractTableModel implements TableModel{
-    private static final String[] COLUNAS = {"Equipamento", "Funcionario",
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2620642386698650474L;
+	
+	private static final String[] COLUNAS = {"Equipamento", "Funcionario",
             "Data Inicial", "Data Final"};
     private static final int EQUIPAMENTO = 0;
     private static final int FUNCIONARIO = 1;

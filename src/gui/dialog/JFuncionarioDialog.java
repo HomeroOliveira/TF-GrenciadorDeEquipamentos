@@ -28,6 +28,7 @@ import gui.action.CancelAction;
 import gui.tablemodel.FuncionarioTableModel;
 import modelo.Funcionario;
 import utils.LocalDateUtils;
+import javax.swing.SwingConstants;
 
 public class JFuncionarioDialog extends JDialog {
 
@@ -80,7 +81,8 @@ public class JFuncionarioDialog extends JDialog {
         contentPanel.setLayout(new BorderLayout(0, 0));
 
         JLabel lblNewLabel_3 = new JLabel("Cadastrar Funcion\u00E1rio");
-        lblNewLabel_3.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNewLabel_3.setFont(new Font("Segoe UI", Font.PLAIN, 26));
         contentPanel.add(lblNewLabel_3, BorderLayout.NORTH);
         {
             panel = new JPanel();
@@ -94,6 +96,7 @@ public class JFuncionarioDialog extends JDialog {
         panel.setLayout(gbl_panel);
 
         JLabel lblNewLabel = new JLabel("Cod Matricula:");
+        lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
         gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
         gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
